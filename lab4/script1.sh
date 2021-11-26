@@ -60,7 +60,7 @@ rm -f *tar.xz
 cd alien*
 perl Makefile.PL; make; make install
 
-alien --to-rmp fortunes*
+alien --to-rpm fortunes*
 rpm -i fortunes*
 
 #9
