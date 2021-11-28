@@ -15,7 +15,7 @@ yum install boost-devel
 yum install ncurses-devel
 make
 
-nano Makefile
+#nano: Makefile
 install:
 	cp ~/bastet/bastet-0.43/bastet /usr/bin/ && chmod a+x /usr/bin/bastet
 
@@ -36,7 +36,7 @@ yum install createrepo
 createrepo localrepo
 
 cd /etc/yum.repos.d
-nano localrepo.repo
+#nano: localrepo.repo
 [localrepo]
 name=localrepo
 mirrorlist=file:///root/localrepo
@@ -51,6 +51,7 @@ ls | xargs -i mv {} {}_new
 mv localrepo.repo_new localrepo.repo
 yum list #checking for only one avaliable package
 yum install checkinstall
+for i in $(ls); do mv $i ${f%_new}; done
 
 #8
 yum install wget
@@ -61,13 +62,20 @@ cd alien*
 perl Makefile.PL; make; make install
 
 alien --to-rpm fortunes*
-rpm -i fortunes*
 
-#9
+#solve installation error
 yum download nano
 yum install https://extras.getpageseed.com/release-el8-latest.rpm
 yum install rpmrebuild
 
+rm -f *.deb
+rpmrebuild -pe fortunes*
+#in VIM-editor:
+#remove line
+#%dir %attr(0775, root, root) "/"
+rpm -i /root/rpmbuild/RPMS/noarch/fourtunes-ru-1.52-3.noarch.rpm
+
+#9
 rpmrebuild -enp nano*
 #in first terminal VIM-editor:
 #name: newnano
